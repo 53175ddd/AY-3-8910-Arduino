@@ -85,11 +85,11 @@ struct tone_t {
   uint8_t ct : 4;
 };
 
-tone_t note[60] = {{119, 7}, { 11, 7}, {166, 6}, { 71, 6}, {236, 5}, {151, 5}, { 71, 5}, {251, 4}, {179, 4}, {112, 4}, { 48, 4}, {244, 3},
-                   {187, 3}, {133, 3}, { 83, 3}, { 35, 3}, {246, 2}, {203, 2}, {163, 2}, {125, 2}, { 89, 2}, { 56, 2}, { 24, 2}, {250, 1},
-                   {221, 1}, {194, 1}, {169, 1}, {145, 1}, {123, 1}, {101, 1}, { 81, 1}, { 62, 1}, { 44, 1}, { 28, 1}, { 12, 1}, {253, 0},
-                   {238, 0}, {225, 0}, {212, 0}, {200, 0}, {189, 0}, {178, 0}, {168, 0}, {159, 0}, {150, 0}, {142, 0}, {134, 0}, {126, 0},
-                   {119, 0}, {112, 0}, {106, 0}, {100, 0}, { 94, 0}, { 89, 0}, { 84, 0}, { 79, 0}, { 75, 0}, { 71, 0}, { 67, 0}, { 63, 0}};
+const tone_t note[60] = {{119, 7}, { 11, 7}, {166, 6}, { 71, 6}, {236, 5}, {151, 5}, { 71, 5}, {251, 4}, {179, 4}, {112, 4}, { 48, 4}, {244, 3},
+                         {187, 3}, {133, 3}, { 83, 3}, { 35, 3}, {246, 2}, {203, 2}, {163, 2}, {125, 2}, { 89, 2}, { 56, 2}, { 24, 2}, {250, 1},
+                         {221, 1}, {194, 1}, {169, 1}, {145, 1}, {123, 1}, {101, 1}, { 81, 1}, { 62, 1}, { 44, 1}, { 28, 1}, { 12, 1}, {253, 0},
+                         {238, 0}, {225, 0}, {212, 0}, {200, 0}, {189, 0}, {178, 0}, {168, 0}, {159, 0}, {150, 0}, {142, 0}, {134, 0}, {126, 0},
+                         {119, 0}, {112, 0}, {106, 0}, {100, 0}, { 94, 0}, { 89, 0}, { 84, 0}, { 79, 0}, { 75, 0}, { 71, 0}, { 67, 0}, { 63, 0}};
 
 const tone_t NOTE_ZERO = {0, 0};
 
@@ -137,23 +137,23 @@ void setup() {
 
   // Reset the AY-3-8910
   digitalWrite(RESET_PIN, LOW);
-  delay(1);
+   delay(1);
   digitalWrite(RESET_PIN, HIGH);
 
-  // Enable only the Tone Generator on Channel A, B, C
+  // Enable the Tone Generator on Channel C, B, A
   write_register( 7, 0b00111000);
   
   // Set the amplitude (volume) to each Channel
-  write_register( 8, 0b00001000);
+  write_register( 8, 0b00000110);
   write_register( 9, 0b00000110);
   write_register(10, 0b00000110);
 
-  delay(1000);
+   delay(1000);
 }
 
 void loop() {
   // play_techno_pop(135);
-  // play_ieji(55);
+  // play_ieji(48);
   play_kankinouta(124);
 
   while(true);
@@ -170,476 +170,201 @@ void play_techno_pop(uint16_t BPM) {
   uint16_t zen =  240000/BPM;           // 4*60*1000
   uint16_t soushoku = 500/BPM;          // 数字は適当
 
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doHH]);
-  delay(hachibu);
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(C, note[reM]);
-  delay(hachibu);
-  write_reg_tone(A, note[reH]);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
-  write_reg_tone(A, note[doHH]);
-  delay(hachibu);
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+  write_reg_tone(A, note[doHH]);                                                                   delay(hachibu);
 
-  /********************************/
+  write_reg_tone(A, note[rasM]);                                  write_reg_tone(C, note[reM]);    delay(hachibu);
+  write_reg_tone(A, note[reH]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
+  write_reg_tone(A, note[doHH]);                                                                   delay(hachibu);
 
-  write_reg_tone(A, note[doH]);
-  delay(hachibu);
-  write_reg_tone(A, note[raH]);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[soH]);
-  delay(jurokubu);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[faH]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[soH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[raH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
+  write_reg_tone(A, note[doH]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[raH]);   write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[soH]);                                                                    delay(jurokubu);
+                                  write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+  write_reg_tone(A, note[faH]);                                                                    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
 
-  /********************************/
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[soH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[raH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+
+  /****************************************************************************************************************/
   
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doHH]);
-  delay(hachibu);
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+  write_reg_tone(A, note[doHH]);                                                                   delay(hachibu);
 
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(C, note[reM]);
-  delay(hachibu);
-  write_reg_tone(A, note[reH]);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
-  write_reg_tone(A, note[doHH]);
-  delay(hachibu);
+  write_reg_tone(A, note[rasM]);                                  write_reg_tone(C, note[reM]);    delay(hachibu);
+  write_reg_tone(A, note[reH]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
+  write_reg_tone(A, note[doHH]);                                                                   delay(hachibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[doH]);
-  delay(hachibu);
-  write_reg_tone(A, note[raH]);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[soH]);
-  delay(jurokubu);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[faH]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
+  write_reg_tone(A, note[doH]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[raH]);   write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[soH]);                                                                    delay(jurokubu);
+                                  write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+  write_reg_tone(A, note[faH]);                                                                    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
 
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[faH]);
-  delay(jurokubu);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[doHH]);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
+                                  write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[faH]);                                                                    delay(jurokubu);
+                                  write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+  write_reg_tone(A, note[doHH]);  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
 
-  /********************************/
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doHH]);
-  delay(hachibu);
 
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(C, note[reM]);
-  delay(hachibu);
-  write_reg_tone(A, note[reH]);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
-  write_reg_tone(A, note[doHH]);
-  delay(hachibu);
+  /****************************************************************************************************************/
 
-  /********************************/
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+  write_reg_tone(A, note[doHH]);                                                                   delay(hachibu);
 
-  write_reg_tone(A, note[doH]);
-  delay(hachibu);
-  write_reg_tone(A, note[raH]);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[soH]);
-  delay(jurokubu);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[faH]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
+  write_reg_tone(A, note[rasM]);                                  write_reg_tone(C, note[reM]);    delay(hachibu);
+  write_reg_tone(A, note[reH]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
+  write_reg_tone(A, note[doHH]);                                                                   delay(hachibu);
 
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[soH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[raH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
+  /****************************************************************************************************************/
 
-  /********************************/
+  write_reg_tone(A, note[doH]);                                                                   delay(hachibu);
+  write_reg_tone(A, note[raH]);   write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[soH]);                                                                   delay(jurokubu);
+                                  write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+  write_reg_tone(A, note[faH]);                                                                   delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[soH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[raH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+
+  /****************************************************************************************************************/
   
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doHH]);
-  delay(hachibu);
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+  write_reg_tone(A, note[doHH]);                                                                   delay(hachibu);
 
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(C, note[reM]);
-  delay(hachibu);
-  write_reg_tone(A, note[reH]);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
-  write_reg_tone(A, note[doHH]);
-  delay(hachibu);
+  write_reg_tone(A, note[rasM]);                                  write_reg_tone(C, note[reM]);    delay(hachibu);
+  write_reg_tone(A, note[reH]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
+  write_reg_tone(A, note[doHH]);                                                                   delay(hachibu);
 
-  /********************************/
 
-  write_reg_tone(A, note[doH]);
-  delay(hachibu);
-  write_reg_tone(A, note[raH]);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(A, note[soH]);
-  delay(jurokubu);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[faH]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
+  /****************************************************************************************************************/
 
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[raL]);
-  delay(jurokubu);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(jurokubu);
-  delay(jurokubu);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
+  write_reg_tone(A, note[doH]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[raH]);   write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+  write_reg_tone(A, note[soH]);                                                                    delay(jurokubu);
+                                  write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+  write_reg_tone(A, note[faH]);                                                                    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+
+                                  write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+                                  write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                  write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+                                                                                                   delay(jurokubu);
+                                  write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);
 
   for(size_t i = 0; i < 4; i++) {
-    write_reg_tone(A, note[raH]);
-    delay(jurokubu);
-    write_reg_tone(A, note[rasH]);
-    delay(jurokubu);
+    write_reg_tone(A, note[raH]);                                                                    delay(jurokubu);
+    write_reg_tone(A, note[rasH]);                                                                   delay(jurokubu);
 
-    /********************************/
+    /****************************************************************************************************************/
 
-    write_reg_tone(A, note[doHH]);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[doM]);
-    delay(hachibu);
-    write_reg_tone(A, note[raH]);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(A, note[rasH]);
-    delay(jurokubu);
-    write_reg_tone(A, note[doHH]);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[doM]);
-    delay(hachibu);
-    write_reg_tone(A, note[raH]);
-    delay(jurokubu);
-    write_reg_tone(A, note[rasH]);
-    delay(jurokubu);
+    write_reg_tone(A, note[doHH]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+    write_reg_tone(A, note[raH]);    write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);   delay(jurokubu);
+    write_reg_tone(A, note[rasH]);                                                                    delay(jurokubu);
+    write_reg_tone(A, note[doHH]);   write_reg_tone(B, note[faM]);    write_reg_tone(C, note[doM]);   delay(hachibu);
+    write_reg_tone(A, note[raH]);                                                                     delay(jurokubu);
+    write_reg_tone(A, note[rasH]);                                                                    delay(jurokubu);
 
-    write_reg_tone(A, note[doHH]);
-    write_reg_tone(C, note[reM]);
-    delay(hachibu);
-    write_reg_tone(A, note[faH]);
-    delay(hachibu);
-    write_reg_tone(A, note[faH]);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(hachibu);
-    write_reg_tone(A, note[faHH]);
-    delay(hachibu);
+    write_reg_tone(A, note[doHH]);   write_reg_tone(C, note[reM]);                                    delay(hachibu);
+    write_reg_tone(A, note[faH]);                                                                     delay(hachibu);
+    write_reg_tone(A, note[faH]);    write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);   delay(hachibu);
+    write_reg_tone(A, note[faHH]);                                                                    delay(hachibu);
 
-    /********************************/
+    /****************************************************************************************************************/
 
-    write_reg_tone(A, note[miHH]);
-    delay(hachibu);
-    write_reg_tone(A, note[doHH]);
-    write_reg_tone(B, note[soM]);
-    write_reg_tone(C, note[doM]);
-    delay(jurokubu);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(A, note[raH]);
-    delay(jurokubu);
-    write_reg_tone(B, note[soM]);
-    write_reg_tone(C, note[doM]);
-    delay(jurokubu);
-    write_reg_tone(A, note[soH]);
-    delay(jurokubu);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
+    write_reg_tone(A, note[miHH]);                                                                    delay(hachibu);
+    write_reg_tone(A, note[doHH]);   write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+                                     write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+    write_reg_tone(A, note[raH]);                                                                     delay(jurokubu);
+                                     write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doM]);    delay(jurokubu);
+    write_reg_tone(A, note[soH]);                                                                     delay(jurokubu);
+                                     write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
 
-    write_reg_tone(A, note[raH]);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[raL]);
-    delay(jurokubu);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(A, note[faH]);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[raL]);
-    delay(jurokubu);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(A, note[faH]);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[raL]);
-    delay(jurokubu);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(A, note[raM]);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[raL]);
-    delay(jurokubu);
-    write_reg_tone(A, note[rasM]);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
+    write_reg_tone(A, note[raH]);    write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                     write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+    write_reg_tone(A, note[faH]);    write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                     write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+    write_reg_tone(A, note[faH]);    write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                     write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+    write_reg_tone(A, note[raM]);    write_reg_tone(B, note[faM]);   write_reg_tone(C, note[raL]);    delay(jurokubu);
+    write_reg_tone(A, note[rasM]);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
 
-    /********************************/
+    /****************************************************************************************************************/
 
-    write_reg_tone(A, note[doH]);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[doM]);
-    delay(hachibu);
-    write_reg_tone(A, note[raM]);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(A, note[rasM]);
-    delay(jurokubu);
-    write_reg_tone(A, note[doH]);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[doM]);
-    delay(hachibu);
-    write_reg_tone(A, note[raM]);
-    delay(jurokubu);
-    write_reg_tone(A, note[rasM]);
-    delay(jurokubu);
+    write_reg_tone(A, note[doH]);   write_reg_tone(B, note[faM]);    write_reg_tone(C, note[doM]);    delay(jurokubu);
+                                    write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+    write_reg_tone(A, note[raM]);   write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+    write_reg_tone(A, note[rasM]);                                                                    delay(jurokubu);
+    write_reg_tone(A, note[doH]);   write_reg_tone(B, note[faM]);    write_reg_tone(C, note[doM]);    delay(hachibu);
+    write_reg_tone(A, note[raM]);                                                                     delay(jurokubu);
+    write_reg_tone(A, note[rasM]);                                                                    delay(jurokubu);
 
-    write_reg_tone(A, note[doH]);
-    write_reg_tone(C, note[reM]);
-    delay(hachibu);
-    write_reg_tone(A, note[faM]);
-    delay(hachibu);
-    write_reg_tone(A, note[faM]);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(hachibu);
-    write_reg_tone(A, note[faH]);
-    delay(hachibu);
+    write_reg_tone(A, note[doH]);                                    write_reg_tone(C, note[reM]);    delay(hachibu);
+    write_reg_tone(A, note[faM]);                                                                     delay(hachibu);
+    write_reg_tone(A, note[faM]);   write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);    delay(hachibu);
+    write_reg_tone(A, note[faH]);                                                                     delay(hachibu);
 
-    /********************************/
+    /****************************************************************************************************************/
 
-    write_reg_tone(A, note[doH]);
-    delay(hachibu);
-    write_reg_tone(A, note[miH]);
-    write_reg_tone(B, note[soM]);
-    write_reg_tone(C, note[doM]);
-    delay(jurokubu);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(A, note[soH]);
-    delay(jurokubu);
-    write_reg_tone(B, note[soM]);
-    write_reg_tone(C, note[doM]);
-    delay(jurokubu);
-    write_reg_tone(A, note[faH]);
-    delay(jurokubu);
+    write_reg_tone(A, note[doH]);                                                                     delay(hachibu);
+    write_reg_tone(A, note[miH]);   write_reg_tone(B, note[soM]);    write_reg_tone(C, note[doM]);    delay(jurokubu);
+                                    write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+    write_reg_tone(A, note[soH]);                                                                     delay(jurokubu);
+                                    write_reg_tone(B, note[soM]);    write_reg_tone(C, note[doM]);    delay(jurokubu);
+    write_reg_tone(A, note[faH]);                                                                     delay(jurokubu);
 
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[raL]);
-    delay(jurokubu);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[raL]);
-    delay(jurokubu);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(A, NOTE_ZERO);
-    delay(jurokubu);
-    write_reg_tone(B, note[faM]);
-    write_reg_tone(C, note[doM]);
-    delay(jurokubu);
-    write_reg_tone(B, NOTE_ZERO);
-    write_reg_tone(C, NOTE_ZERO);
+                                    write_reg_tone(B, note[faM]);    write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                    write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+                                    write_reg_tone(B, note[faM]);    write_reg_tone(C, note[raL]);    delay(jurokubu);
+                                    write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
+    write_reg_tone(A, NOTE_ZERO);                                                                     delay(jurokubu);
+                                    write_reg_tone(B, note[faM]);    write_reg_tone(C, note[doM]);    delay(jurokubu);
+                                    write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);    delay(jurokubu);
   }
 
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(hachibu);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);     delay(hachibu);
 }
 
 void play_ieji(uint16_t BPM) {
@@ -653,339 +378,154 @@ void play_ieji(uint16_t BPM) {
   uint16_t zen =  240000/BPM;           // 4*60*1000
   uint16_t soushoku = 500/BPM;          // 数字は適当
 
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[faL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[doH]);
-  delay(jurokubu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[doH]);
-  delay(shibu);
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[faL]);    delay(huten_hachibu);
+  write_reg_tone(A, note[doH]);                                                                    delay(jurokubu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);                                                                    delay(soushoku);
+  write_reg_tone(A, note[doH]);                                                                    delay(shibu);
 
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[faL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[soM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[faM]);
-  delay(shibu);
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[faL]);    delay(huten_hachibu);
+  write_reg_tone(A, note[soM]);                                                                    delay(jurokubu);
+  write_reg_tone(A, note[faM]);                                                                    delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[soM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[doL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[raM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[doH]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[raM]);
-  delay(jurokubu);
+  write_reg_tone(A, note[soM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[doL]);    delay(huten_hachibu);
+  write_reg_tone(A, note[raM]);                                                                    delay(jurokubu);
+  write_reg_tone(A, note[doH]);                                                                    delay(huten_hachibu);
+  write_reg_tone(A, note[raM]);                                                                    delay(jurokubu);
 
-  write_reg_tone(A, note[soM]);
-  write_reg_tone(B, note[miM]);
-  write_reg_tone(C, note[doM]);
-  delay(hachibu);
-  write_reg_tone(C, note[rasL]);
-  delay(hachibu);
-  write_reg_tone(C, note[raL]);
-  delay(hachibu);
-  write_reg_tone(C, note[soL]);
-  delay(hachibu);
+  write_reg_tone(A, note[soM]);   write_reg_tone(B, note[miM]);   write_reg_tone(C, note[doM]);    delay(hachibu);
+                                                                  write_reg_tone(C, note[rasL]);   delay(hachibu);
+                                                                  write_reg_tone(C, note[raL]);    delay(hachibu);
+                                                                  write_reg_tone(C, note[soL]);    delay(hachibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[faL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[doH]);
-  delay(jurokubu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[doH]);
-  delay(shibu);
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[faL]);    delay(huten_hachibu);
+  write_reg_tone(A, note[doH]);                                                                    delay(jurokubu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);                                                                    delay(soushoku);
+  write_reg_tone(A, note[doH]);                                                                    delay(shibu);
 
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[dosM]);
-  write_reg_tone(C, note[raL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[soM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[faM]);
-  delay(shibu);
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[dosM]);   write_reg_tone(C, note[raL]);   delay(huten_hachibu);
+  write_reg_tone(A, note[soM]);                                                                    delay(jurokubu);
+  write_reg_tone(A, note[faM]);                                                                    delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[soM]);
-  write_reg_tone(B, note[reM]);
-  write_reg_tone(C, note[rasL]);
-  delay(hachibu);
-  write_reg_tone(A, note[raM]);
-  delay(hachibu);
-  write_reg_tone(A, note[soM]);
-  write_reg_tone(B, note[miM]);
-  write_reg_tone(C, note[doM]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[faM]);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(jurokubu);
+  write_reg_tone(A, note[soM]);   write_reg_tone(B, note[reM]);   write_reg_tone(C, note[rasL]);   delay(hachibu);
+  write_reg_tone(A, note[raM]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[soM]);   write_reg_tone(B, note[miM]);   write_reg_tone(C, note[doM]);    delay(huten_hachibu);
+  write_reg_tone(A, note[faM]);   write_reg_tone(B, NOTE_ZERO);                                    delay(jurokubu);
 
-  write_reg_tone(A, note[faM]);
-  write_reg_tone(B, note[raL]);
-  write_reg_tone(C, note[faL]);
-  delay(nibu);
+  write_reg_tone(A, note[faM]);   write_reg_tone(B, note[raL]);   write_reg_tone(C, note[faL]);    delay(nibu);
 
-  /********************************/
 
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasL]);
-  write_reg_tone(C, note[faL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[reM]);
-  delay(jurokubu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[reM]);
-  delay(shibu);
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[miH]);
-  write_reg_tone(B, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[raL]);
-  delay(hachibu);
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasL]);
-  write_reg_tone(C, note[faL]);
-  delay(shibu - soushoku);
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasL]);  write_reg_tone(C, note[faL]);    delay(huten_hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[reM]);                                    delay(jurokubu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);                                    delay(soushoku);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[reM]);                                    delay(shibu);
 
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
+  write_reg_tone(A, note[miH]);   write_reg_tone(B, note[doM]);                                    delay(hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[raL]);                                    delay(hachibu);
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasL]);  write_reg_tone(C, note[faL]);    delay(shibu - soushoku);
 
-  /********************************/
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
 
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasL]);
-  write_reg_tone(C, note[faL]);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[reM]);
-  delay(hachibu);
-  write_reg_tone(A, note[miH]);
-  write_reg_tone(B, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[raL]);
-  delay(hachibu);
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasL]);
-  write_reg_tone(C, note[faL]);
-  delay(nibu - soushoku);
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasL]);  write_reg_tone(C, note[faL]);    delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[reM]);                                    delay(hachibu);
+  write_reg_tone(A, note[miH]);   write_reg_tone(B, note[doM]);                                    delay(hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[raL]);                                    delay(hachibu);
 
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasL]);  write_reg_tone(C, note[faL]);    delay(nibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasM]);
-  write_reg_tone(C, note[rasLL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[reH]);
-  delay(jurokubu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[reH]);
-  delay(shibu);
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasM]);  write_reg_tone(C, note[rasLL]);   delay(huten_hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[reH]);                                     delay(jurokubu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);                                     delay(soushoku);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[reH]);                                     delay(shibu);
 
-  write_reg_tone(A, note[miH]);
-  write_reg_tone(B, note[doH]);
-  write_reg_tone(C, note[raLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[raM]);
-  delay(hachibu);
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasM]);
-  write_reg_tone(C, note[rasLL]);
-  delay(shibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
+  write_reg_tone(A, note[miH]);   write_reg_tone(B, note[doH]);   write_reg_tone(C, note[raLL]);    delay(hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[raM]);                                     delay(hachibu);
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasM]);  write_reg_tone(C, note[rasLL]);   delay(shibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);                                     delay(soushoku);
+
+  /****************************************************************************************************************/
+
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasM]);  write_reg_tone(C, note[rasLL]);   delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[reH]);                                     delay(hachibu);
+  write_reg_tone(A, note[miH]);   write_reg_tone(B, note[doH]);                                     delay(hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[raM]);                                     delay(hachibu);
+
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasM]);                                    delay(hachibu);
+                                                                  write_reg_tone(C, note[faM]);     delay(jurokubu);
+                                                                  write_reg_tone(C, note[resM]);    delay(jurokubu);
+                                                                  write_reg_tone(C, note[reM]);     delay(hachibu);
+                                                                  write_reg_tone(C, note[rasM]);    delay(hachibu);
+
+  /****************************************************************************************************************/
+
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[faL]);     delay(huten_hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[raM]);                                     delay(jurokubu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);                                     delay(soushoku);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[raM]);                                     delay(shibu);
+
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[faL]);     delay(huten_hachibu);
+  write_reg_tone(A, note[soM]);   write_reg_tone(B, note[doM]);                                     delay(jurokubu);
+  write_reg_tone(A, note[faM]);   write_reg_tone(B, note[raL]);                                     delay(shibu);
+
+  /****************************************************************************************************************/
+
+  write_reg_tone(A, note[soM]);   write_reg_tone(B, note[miM]);   write_reg_tone(C, note[doL]);    delay(huten_hachibu);
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);                                    delay(jurokubu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[soM]);                                    delay(huten_hachibu);
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[faM]);                                    delay(jurokubu);
+
+  write_reg_tone(A, note[soM]);   write_reg_tone(B, note[miM]);   write_reg_tone(C, note[doM]);    delay(shibu);
+  write_reg_tone(A, note[sosM]);                                                                   delay(shibu);
+
+  /****************************************************************************************************************/
   
-  /********************************/
+  write_reg_tone(A, note[raM]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[faL]);    delay(huten_hachibu);
+  write_reg_tone(A, note[doH]);                                                                    delay(jurokubu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);                                                                    delay(soushoku);
+  write_reg_tone(A, note[doH]);                                   write_reg_tone(C, note[miL]);    delay(shibu);
 
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasM]);
-  write_reg_tone(C, note[rasLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[reH]);
-  delay(hachibu);
-  write_reg_tone(A, note[miH]);
-  write_reg_tone(B, note[doH]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[raM]);
-  delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[raM]);   write_reg_tone(C, note[reL]);    delay(huten_hachibu);
+  write_reg_tone(A, note[soH]);   write_reg_tone(B, note[doH]);                                    delay(jurokubu - soushoku);
+                                  write_reg_tone(B, NOTE_ZERO);                                    delay(soushoku);
+  write_reg_tone(A, note[raH]);   write_reg_tone(B, note[doH]);   write_reg_tone(C, note[doL]);    delay(shibu);
 
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasM]);
-  delay(hachibu);
-  write_reg_tone(C, note[faM]);
-  delay(jurokubu);
-  write_reg_tone(C, note[resM]);
-  delay(jurokubu);
-  write_reg_tone(C, note[reM]);
-  delay(hachibu);
-  write_reg_tone(C, note[rasM]);
-  delay(hachibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[faL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[raM]);
-  delay(jurokubu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[raM]);
-  delay(shibu);
+  write_reg_tone(A, note[soH]);   write_reg_tone(B, note[reH]);   write_reg_tone(C, note[rasLL]);  delay(huten_hachibu);
+  write_reg_tone(A, note[faH]);                                                                    delay(jurokubu);
+  write_reg_tone(A, note[soH]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasM]);  write_reg_tone(C, note[rasL]);   delay(hachibu);
 
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[faL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[soM]);
-  write_reg_tone(B, note[doM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[faM]);
-  write_reg_tone(B, note[raL]);
-  delay(shibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[raM]);   write_reg_tone(C, note[faL]);    delay(hachibu);
+                                  write_reg_tone(B, note[faM]);                                    delay(hachibu);
+                                  write_reg_tone(B, note[raM]);                                    delay(hachibu);
+                                  write_reg_tone(B, note[doH]);                                    delay(hachibu);
+
+  /****************************************************************************************************************/
+
+  write_reg_tone(A, note[soH]);   write_reg_tone(B, note[reH]);   write_reg_tone(C, note[rasLL]);  delay(huten_hachibu);
+  write_reg_tone(A, note[faH]);                                                                    delay(jurokubu);
+  write_reg_tone(A, note[soH]);                                                                    delay(hachibu);
+  write_reg_tone(A, note[reH]);   write_reg_tone(B, note[rasM]);  write_reg_tone(C, note[rasL]);   delay(hachibu);
+  write_reg_tone(A, note[faH]);   write_reg_tone(B, note[raM]);   write_reg_tone(C, note[faL]);    delay(nibu);
+
+
+  /****************************************************************************************************************/
   
-  /********************************/
-
-  write_reg_tone(A, note[soM]);
-  write_reg_tone(B, note[miM]);
-  write_reg_tone(C, note[doL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  delay(jurokubu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[soM]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[faM]);
-  delay(jurokubu);
-
-  write_reg_tone(A, note[soM]);
-  write_reg_tone(B, note[miM]);
-  write_reg_tone(C, note[doM]);
-  delay(shibu);
-  write_reg_tone(A, note[sosM]);
-  delay(shibu);
-
-  /********************************/
-  
-  write_reg_tone(A, note[raM]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[faL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[doH]);
-  delay(jurokubu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(C, note[miL]); 
-  delay(shibu);
-
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[raM]);
-  write_reg_tone(C, note[reL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[soH]);
-  write_reg_tone(B, note[doH]);
-  delay(jurokubu - soushoku);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[raH]);
-  write_reg_tone(B, note[doH]);
-  write_reg_tone(C, note[doL]);
-  delay(shibu);
-
-  /********************************/
-
-  write_reg_tone(A, note[soH]);
-  write_reg_tone(B, note[reH]);
-  write_reg_tone(C, note[rasLL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[faH]);
-  delay(jurokubu);
-  write_reg_tone(A, note[soH]);
-  delay(hachibu);
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasM]);
-  write_reg_tone(C, note[rasL]);
-  delay(hachibu);
-
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[raM]);
-  write_reg_tone(C, note[faL]);
-  delay(hachibu);
-  write_reg_tone(B, note[faM]);
-  delay(hachibu);
-  write_reg_tone(B, note[raM]);
-  delay(hachibu);
-  write_reg_tone(B, note[doH]);
-  delay(hachibu);
-
-  /********************************/
-
-  write_reg_tone(A, note[soH]);
-  write_reg_tone(B, note[reH]);
-  write_reg_tone(C, note[rasLL]);
-  delay(huten_hachibu);
-  write_reg_tone(A, note[faH]);
-  delay(jurokubu);
-  write_reg_tone(A, note[soH]);
-  delay(hachibu);
-  write_reg_tone(A, note[reH]);
-  write_reg_tone(B, note[rasM]);
-  write_reg_tone(C, note[rasL]);
-  delay(hachibu);
-
-  write_reg_tone(A, note[faH]);
-  write_reg_tone(B, note[raM]);
-  write_reg_tone(C, note[faL]);
-  delay(nibu);
-
-  /********************************/
-  
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);
 }
 
 void play_kankinouta(uint16_t BPM) {
@@ -1003,358 +543,150 @@ void play_kankinouta(uint16_t BPM) {
   write_reg_tone(CH, note[NOTE]);
    ********************************/
 
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu);
-  write_reg_tone(B, note[sosL]);
-  delay(shibu);
-  write_reg_tone(A, note[dosH]);
-  write_reg_tone(B, note[rasL]);
-  write_reg_tone(C, note[sosL]);
-  delay(shibu);
-  write_reg_tone(A, note[resH]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
+  write_reg_tone(A, note[doH]);                                   write_reg_tone(C, note[sosLL]);   delay(shibu);
+  write_reg_tone(B, note[sosL]);                                                                    delay(shibu);
+  write_reg_tone(A, note[dosH]);  write_reg_tone(B, note[rasL]);  write_reg_tone(C, note[sosL]);    delay(shibu);
+  write_reg_tone(A, note[resH]);  write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);   delay(shibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);                                     delay(soushoku);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[resH]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(A, note[dosH]);
-  write_reg_tone(B, note[rasL]);
-  delay(hachibu);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosL]);
-  write_reg_tone(C, note[resLL]);
-  delay(shibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[resM]);
-  write_reg_tone(C, note[soLL]);
-  delay(hachibu - soushoku);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu);
+  write_reg_tone(A, note[resH]);  write_reg_tone(B, note[doM]);   write_reg_tone(C, note[resL]);    delay(shibu);
+  write_reg_tone(A, note[dosH]);  write_reg_tone(B, note[rasL]);                                    delay(hachibu);  
+                                                                  write_reg_tone(C, note[resLL]);   delay(hachibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[sosL]);  write_reg_tone(C, note[resLL]);   delay(shibu);
+  write_reg_tone(A, note[rasM]);  write_reg_tone(B, note[resM]);  write_reg_tone(C, note[soLL]);    delay(hachibu - soushoku);
+                                                                  write_reg_tone(C, NOTE_ZERO);     delay(soushoku);
+                                                                  write_reg_tone(C, note[resLL]);   delay(hachibu);
 
-  /********************************/
-  
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  delay(hachibu - soushoku);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(C, note[sosLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soL]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosL]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
+  /****************************************************************************************************************/
 
-  /********************************/
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);  delay(shibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);    write_reg_tone(B, NOTE_ZERO);                                    delay(soushoku);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);                                    delay(hachibu - soushoku);
+                                                                   write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
+                                                                   write_reg_tone(C, note[sosLL]);  delay(hachibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[soL]);   write_reg_tone(C, note[resL]);   delay(shibu);
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[sosL]);   write_reg_tone(C, note[sosLL]);  delay(shibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);                                     delay(soushoku);
 
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosL]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soL]);
-  delay(hachibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soL]);
-  write_reg_tone(C, note[resLL]);
-  delay(nibu);
+  /****************************************************************************************************************/
+
+  write_reg_tone(A, note[doH]);   write_reg_tone(B, note[sosL]);   write_reg_tone(C, note[resL]);   delay(shibu);
+                                                                   write_reg_tone(C, note[resLL]);  delay(hachibu);
+  write_reg_tone(A, note[rasM]);  write_reg_tone(B, note[soL]);                                     delay(hachibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);   write_reg_tone(B, NOTE_ZERO);    write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
+  write_reg_tone(A, note[rasM]);  write_reg_tone(B, note[soL]);    write_reg_tone(C, note[resLL]);  delay(nibu);
   write_reg_tone(B, NOTE_ZERO);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu);
-  write_reg_tone(B, note[sosL]);
-  delay(shibu);
-  write_reg_tone(A, note[dosH]);
-  write_reg_tone(B, note[rasL]);
-  write_reg_tone(C, note[sosL]);
-  delay(shibu);
-  write_reg_tone(A, note[resH]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
+  write_reg_tone(A, note[doH]);                                    write_reg_tone(C, note[sosLL]);  delay(shibu);
+                                   write_reg_tone(B, note[sosL]);                                   delay(shibu);
+  write_reg_tone(A, note[dosH]);   write_reg_tone(B, note[rasL]);  write_reg_tone(C, note[sosL]);   delay(shibu);
+  write_reg_tone(A, note[resH]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);  delay(shibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);    write_reg_tone(B, NOTE_ZERO);                                    delay(soushoku);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[resH]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(A, note[dosH]);
-  write_reg_tone(B, note[rasL]);
-  delay(hachibu);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosL]);
-  write_reg_tone(C, note[resLL]);
-  delay(shibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[resM]);
-  write_reg_tone(C, note[soLL]);
-  delay(hachibu);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu);
+  write_reg_tone(A, note[resH]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[resL]);   delay(shibu);
+  write_reg_tone(A, note[dosH]);   write_reg_tone(B, note[rasL]);                                   delay(hachibu);
+                                                                   write_reg_tone(C, note[resLL]);  delay(hachibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);    write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosL]);  write_reg_tone(C, note[resLL]);  delay(shibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[resM]);  write_reg_tone(C, note[soLL]);   delay(hachibu);
+                                                                   write_reg_tone(C, note[resLL]);  delay(hachibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  delay(hachibu - soushoku);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(C, note[sosLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soL]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosL]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);  delay(shibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);    write_reg_tone(B, NOTE_ZERO);                                    delay(soushoku);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);                                    delay(hachibu - soushoku);
+                                                                   write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
+                                                                   write_reg_tone(C, note[sosLL]);  delay(hachibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[soL]);   write_reg_tone(C, note[resL]);   delay(shibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosL]);  write_reg_tone(C, note[sosLL]);  delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[dosM]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(C, note[reLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  delay(hachibu);
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(nibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[dosM]);  write_reg_tone(C, note[resL]);   delay(shibu);
+                                                                   write_reg_tone(C, note[reLL]);   delay(hachibu);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);                                    delay(hachibu);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);  delay(nibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[resLL]);
-  delay(shibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soM]);
-  delay(hachibu - soushoku);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosM]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[soM]);   write_reg_tone(C, note[resLL]);  delay(shibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[soM]);                                    delay(hachibu - soushoku);
+                                                                   write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
+                                                                   write_reg_tone(C, note[resLL]);  delay(hachibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosM]);  write_reg_tone(C, note[resL]);   delay(shibu);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);  delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[resLL]);
-  delay(shibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosM]);
-  delay(hachibu - soushoku);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[dosH]);
-  write_reg_tone(B, note[rasM]);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosM]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[soM]);   write_reg_tone(C, note[resLL]);  delay(shibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosM]);                                   delay(hachibu - soushoku);
+                                                                   write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
+  write_reg_tone(A, note[dosH]);   write_reg_tone(B, note[rasM]);  write_reg_tone(C, note[resLL]);  delay(hachibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosM]);  write_reg_tone(C, note[resL]);   delay(shibu);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);  delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[resLL]);
-  delay(shibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosM]);
-  write_reg_tone(C, note[resL]);
-  delay(hachibu);
-  write_reg_tone(A, note[dosH]);
-  write_reg_tone(B, note[rasM]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[miL]);
-  delay(shibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soM]);
-  write_reg_tone(C, note[doL]);
-  delay(shibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[soM]);   write_reg_tone(C, note[resLL]);  delay(shibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosM]);  write_reg_tone(C, note[resL]);   delay(hachibu);
+  write_reg_tone(A, note[dosH]);   write_reg_tone(B, note[rasM]);                                   delay(hachibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[soM]);   write_reg_tone(C, note[miL]);    delay(shibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[soM]);   write_reg_tone(C, note[doL]);    delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[faM]);
-  write_reg_tone(C, note[faL]);
-  delay(shibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[reM]);
-  write_reg_tone(C, note[rasLL]);
-  delay(shibu);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, note[resM]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[faM]);   write_reg_tone(C, note[faL]);    delay(shibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[reM]);   write_reg_tone(C, note[rasLL]);  delay(shibu);
+  write_reg_tone(A, NOTE_ZERO);    write_reg_tone(B, note[resM]);  write_reg_tone(C, note[resL]);   delay(shibu);
 
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosM]);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(shibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosM]);  write_reg_tone(C, NOTE_ZERO);    delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  delay(shibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosL]);
-  delay(shibu);
-  write_reg_tone(A, note[dosH]);
-  write_reg_tone(B, note[rasL]);
-  write_reg_tone(C, note[sosL]);
-  delay(shibu);
-  write_reg_tone(A, note[resH]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu);
+                                                                                                    delay(shibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosL]);                                   delay(shibu);
+  write_reg_tone(A, note[dosH]);   write_reg_tone(B, note[rasL]);  write_reg_tone(C, note[sosL]);   delay(shibu);
+  write_reg_tone(A, note[resH]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);  delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[resH]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(A, note[dosH]);
-  write_reg_tone(B, note[rasL]);
-  delay(hachibu);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosL]);
-  write_reg_tone(C, note[resLL]);
-  delay(shibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[dosH]);
-  write_reg_tone(B, note[soL]);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[dosH]);
-  delay(hachibu);
+  write_reg_tone(A, note[resH]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[resL]);   delay(shibu);
+  write_reg_tone(A, note[dosH]);   write_reg_tone(B, note[rasL]);                                   delay(hachibu);
+                                                                   write_reg_tone(C, note[resLL]);  delay(hachibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosL]);  write_reg_tone(C, note[resLL]);  delay(shibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);    write_reg_tone(B, NOTE_ZERO);   write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
+  write_reg_tone(A, note[dosH]);   write_reg_tone(B, note[soL]);   write_reg_tone(C, note[resLL]);  delay(hachibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[dosH]);                                   delay(hachibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu);
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  delay(hachibu - soushoku);
-  write_reg_tone(C, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(C, note[sosLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[soL]);
-  write_reg_tone(C, note[resLL]);
-  delay(shibu);
-  write_reg_tone(A, note[doH]);
-  write_reg_tone(B, note[sosL]);
-  write_reg_tone(C, note[sosLL]);
-  delay(shibu);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);  delay(shibu);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);                                    delay(hachibu - soushoku);
+                                                                   write_reg_tone(C, NOTE_ZERO);    delay(soushoku);
+                                                                   write_reg_tone(C, note[sosLL]);  delay(hachibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[soL]);   write_reg_tone(C, note[resLL]);  delay(shibu);
+  write_reg_tone(A, note[doH]);    write_reg_tone(B, note[sosL]);  write_reg_tone(C, note[sosLL]);  delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  write_reg_tone(A, note[rasM]);
-  write_reg_tone(B, note[dosM]);
-  write_reg_tone(C, note[resL]);
-  delay(shibu);
-  write_reg_tone(C, note[resLL]);
-  delay(hachibu);
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  delay(hachibu - soushoku);
-  write_reg_tone(A, NOTE_ZERO);
-  write_reg_tone(B, NOTE_ZERO);
-  delay(soushoku);
-  write_reg_tone(A, note[sosM]);
-  write_reg_tone(B, note[doM]);
-  write_reg_tone(C, note[sosLL]);
-  delay(nibu);
+  write_reg_tone(A, note[rasM]);   write_reg_tone(B, note[dosM]);  write_reg_tone(C, note[resL]);   delay(shibu);
+                                                                   write_reg_tone(C, note[resLL]);  delay(hachibu);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);                                    delay(hachibu - soushoku);
+  write_reg_tone(A, NOTE_ZERO);    write_reg_tone(B, NOTE_ZERO);                                    delay(soushoku);
+  write_reg_tone(A, note[sosM]);   write_reg_tone(B, note[doM]);   write_reg_tone(C, note[sosLL]);  delay(nibu);
 
-  /********************************/
+  /****************************************************************************************************************/
 
-  delay(shibu);
+   delay(shibu);
 
-  /********************************/
+  /****************************************************************************************************************/
   
   write_reg_tone(A, NOTE_ZERO);
   write_reg_tone(B, NOTE_ZERO);
